@@ -1,4 +1,4 @@
-# Containers Workshop
+# OpenSCAP Workshop
 
 
 `OpenSCAP Workshop` is a ansible playbook to provision servers in AWS. This playbook uses Ansible to wrap Terraform, for provisioning AWS infrastructure and nodes. To find more info about Terraform [check here](https://www.terraform.io/docs/providers/aws/index.html)
