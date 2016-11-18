@@ -1,0 +1,3 @@
+# file: roles/aws.terraform/vars/main.yml
+---
+# Vars taken from group_vars/all

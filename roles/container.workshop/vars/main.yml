@@ -1,0 +1,3 @@
+# file: roles/container.workshop/vars/main.yml
+---
+# Everything here should be from group_vars/all

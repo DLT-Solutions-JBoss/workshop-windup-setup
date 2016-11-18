@@ -1,0 +1,102 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!--<link rel="stylesheet" href="css/main.css"> -->
+            <!-- PatternFly Styles -->
+            <link href="css/patternfly.min.css" rel="stylesheet" media="screen, print">
+            <link href="css/patternfly-additions.min.css" rel="stylesheet" media="screen, print">
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+        <nav class="navbar navbar-default navbar-pf" role="navigation">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+              <img src="img/openscap.png" alt="OpenSCAP Workshop" />
+            </a>
+          </div>
+          <div class="collapse navbar-collapse navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-primary">
+              <li class="active">
+                <a href="#">SSH</a>
+              </li>
+              <li class="active">
+                <a href="scap-security-guide/">Source Code Files</a>
+              </li>
+              <li class="active">
+                <a href="docs/">SSG Docs</a>
+              </li>
+              <li class="active">
+                <a href="scans/">Scan Results</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <!-- AWS SSH Key -->
+        <div class="row">
+        <div class="col-md-4"></div>
+        <!-- Start Box -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card-pf card-pf-view ">
+          <div class="card-pf-body">
+            <div class="card-pf-top-element">
+              <span class="fa fa-amazon card-pf-icon-circle"></span>
+            </div>
+            <h2 class="card-pf-title text-center">
+              Download AWS SSH Key
+            </h2>
+            <div class="card-pf-items text-center">
+              <div class="card-pf-item">
+                <span class="fa fa-key"></span>
+              </div>
+              <div class="card-pf-item">
+                 <button class="btn btn-primary btn-lg" onclick="window.open('container.pem')" type="submit">Download</button>
+              </div>
+            </div>
+            <p class="card-pf-info text-center"><strong>Created On</strong> today 
+            <br/>Expires 12pm Tonight</p>
+          </div>
+          <div class="card-pf-view-checkbox">
+            <input type="checkbox">
+          </div>
+        </div>
+        </div>
+        <!-- End Box -->
+
+        <!-- Start Info -->
+        </div>
+        <div class="row">
+        <div class="col-md-4"></div>
+        <center>
+        <div class="col-md-4">
+          <span class="label label-default">chmod 0600 ~/path/to/container.pem 
+          </span>
+          <br/>
+          <span class="label label-default">ssh -i ~/path/to/container.pem ec2-user@student#.labs.redhatgov.io
+          </span>
+        </div>
+        </center>
+        <!-- End Info -->
+    </body>
+</html>
