@@ -1,128 +1,96 @@
 # JBoss Migration Toolkit Workshop
 
+This Ansible playbook is used to install JMT on Terraform supported providers.  Out of the box this playbook will create 10 EC2 instances the AWS cloud.  Future versions of this playbook will enable more providers.  This playbook can be modified to increase the number of nodes in the cluster if so desired.
 
-`JBoss Migration Toolkit Workshop` is a ansible playbook to provision servers in AWS. This playbook uses Ansible to wrap Terraform, for provisioning AWS infrastructure and nodes. To find more info about Terraform [check here](https://www.terraform.io/docs/providers/aws/index.html)
+After checking out this repository, search for the string "INSERT_VALUES_HERE" through out the files and replace that string with the appropriate values for the field.  The files and fields that need this change are listed below.
 
-These modules all require that you have AWS API keys available to use to provision AWS resources. You also need to have IAM permissions set to allow you to create resources within AWS. There are several methods for setting up your AWS environment on you local machine. 
+# Dependencies
 
-Export the `AWS API Keys` by hand;
+- [Terraform](https://www.terraform.io/intro/getting-started/install.html) (v0.8.5)
+- [Ansible](http://docs.ansible.com/ansible/intro_installation.html) (v2.2.1.0)
+- [Red Hat Customer Portal Activation Key](https://access.redhat.com/articles/1378093)
+- [Red Hat Cloud Access](https://www.redhat.com/en/technologies/cloud-computing/cloud-access) (optional)
 
-```
-export AWS_ACCESS_KEY_ID='****************WFQ'
-export AWS_SECRET_ACCESS_KEY='****************TFHJw'
-```
+### [Amazon Web Services](https://access.redhat.com/articles/2623521)
 
-This repo also requires that you have Ansible installed on your local machine. For the most upto date methods of installing Ansible for your operating system [check here](http://docs.ansible.com/ansible/intro_installation.html).
+- [AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
+- Domain purchased through AWS and managed by [Route53](https://aws.amazon.com/route53/)
 
-This repo also requires that Terraform be installed if you are using the `aws.infra.terraform` role. For the most upto data methods of installing Terraform for your operating system [check here](https://www.terraform.io/downloads.html)
+### [Google Cloud Platform](https://access.redhat.com/articles/2751521)
 
+- TBD
 
-## AWS Infrastructure Roles
+### Microsoft Azure
 
-### role/aws.infra.terraform
+- TBD
 
-Configure the workshop with your [api keys](https://aws.amazon.com/developers/access-keys/) and domain & [zone id](http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html) name for the workshop. Also fill in the `num_nodes` for the amount of students in the class. Also ensure that you have a `~/.ssh` folder created.  
+# Required
 
-`groups_var/all`
+The following variables must be set before usage.
 
-```
-# file: group_vars/all
-
-#####################################################
-# jmt.workshop  |  RHEL Subscription Info
-#####################################################
-username: ""
-password: ""
-pool_id: ""
-
-
-# If you plan on protecting your web server with 
-# a password, set it here:
-workshop_password: "r3dh4t1! 
-
-#####################################################
-# aws.infra.terraform |  Domain Name you own
-#####################################################
-# NOTE: some commonly used domains/zone combos:
-#
-# For openscap.io:
-#domain_name: "demo-test-dlt.com"
-#zone_id: "ZH2VK6MJFH9R4"
-#
-# For redhatgov.io (https://redhatgov.signin.aws.amazon.com/console)
-#domain_name: "demo-test-dlt.com"
-#zone_id: "Z24HHVIM122OC"
-
-domain_name: ""
-zone_id: ""
-
-#####################################################
-# aws.infra.terraform |  AWS API Keys terraform.tfvars
-#####################################################
-# NOTE: did you remember to expose these as shell vars?
-# $ export AWS_ACCESS_KEY_ID=''
-# $ export AWS_SECRET_ACCESS_KEY=''
-#
-aws_access_key: ""
-aws_secret_key: ""
-
-# NOTE: If you change this, you will need to update
-#		the AMI IDs used elsewhere!
-region: "us-east-1"
-
-
-#####################################################
-# aws.infra.terraform |  Number of Students
-#####################################################
-# Pro tip: edit the "forks" option in ansible.cfg,
-# which reflects how many parralel connections
-# ansible will make. If you have 30-50+ student VMs,
-# there's no reason "forks" shouldn't match.
-#
-# Setting "forks" will dramatically speed up your
-# build!
-num_nodes: 40
-```
-
-To create infrastructure and a instance via Terraform 
+### group_vars/all/vault.yml
 
 ```
-cd workshops
-ansible-playbook -i inventory 1_aws_infra.yml --tags "tf_create" 
+default_domain: "${INSERT_VALUE_HERE}"
+default_user: "${INSERT_VALUE_HERE}"
+aws_access_key_id: "${INSERT_VALUE_HERE}"
+aws_secret_access_key: "${INSERT_VALUE_HERE}"
 ```
 
-To destroy
+```
+aws_route53_zone_id: "${INSERT_VALUE_HERE}"
+```
+The `aws_route53_zone_id` value can be found using the following command:
+
+<pre>
+aws route53 list-hosted-zones --query 'HostedZones[*]' --output text | \
+grep '\/hostedzone\/.*<b>${INSERT_VALUE_HERE}</b>' | sed -e 's/.*\///' -e 's/[^a-zA-Z0-9].*//'
+</pre>
+
+Make sure to replace `${INSERT_VALUE_HERE}` with the domain purchased through AWS and managed by Route53.
 
 ```
-cd /tmp/terraform
+rhel_rhsm_activationkey: "${INSERT_VALUE_HERE}"
+rhel_rhsm_org_id: "${INSERT_VALUE_HERE}"
+```
+
+```
+openshift_cluster_admin_username: "${INSERT_VALUE_HERE}"
+openshift_cluster_admin_password: "${INSERT_VALUE_HERE}"
+```
+
+### inventory
+
+**!Important** These variables must be updated manually, based on `vault_default_subdomain` value from `group_vars/all/vault.yml` file.
+
+```
+master.{{ default_subdomain }}
+node.[0:1].{{ default_subdomain }}
+```
+
+**[NOTE]:** The value `[0:1]` is a [pattern](http://docs.ansible.com/ansible/intro_patterns.html#patterns) that declares how many OpenShift nodes to create. In this case it will create `node0` and `node1`.
+
+# Usage
+
+**!Important** You must encrypt your group_vars/all/vault.yml before running your playbook.  You must add a vault_pass.txt to your home directory containing your password.
+
+```
+ansible-vault encrypt group_vars/all/vault.yml
+```
+
+You will be prompted to create a password and once complete, you can put this password is a file referenced in the ansible.cfg (vault_password_file = ~/.vault_pass.txt) file.  The current entry has a location of ~/.vault_pass.txt but you can chnage this at your discretion.
+
+### Provision
+
+```
+ansible-playbook -i inventory site.yml
+```
+
+### Destroy
+
+**[NOTE]:** This hidden directory contains the key pair for SSH access to instantiated host systems.
+
+```
+cd $(pwd)/.{{ default_domain }}
 terraform destroy
 ```
-
-## Configure Container Workshop
-
-### role/jmt.workshop
-
-To target the newly created EC2 instance use the `inventory` folder. The [ec2.py](http://docs.ansible.com/ansible/intro_dynamic_inventory.html) is a dynamic script that queries Amazon for your instances. The `jmt.workshop` role sets up the student environment.
-
-### Use `aws tags` to query AWS for your instance by AWS Tags
-
-
-```
-ansible-playbook -i inventory 2_aws_ec2.yml
-```
-
-
-## Students connect to their instance
-
-Students should use a web browser to connect to their instance and download the ssh key from the newly created instance. 
-
-
-```
-student#.labs.openscap.io
-```
-
-![Student Login](img/student-login.png)
-
-## Changing the student webpage
-
-If you'd like to change the student webpage, e.g. add more tabs, edit `roles/jmt.workshop/files/web_content/index.html`
