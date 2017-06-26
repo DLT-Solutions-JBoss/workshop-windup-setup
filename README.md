@@ -1,7 +1,7 @@
-# OpenSCAP Workshop
+# JBoss Migration Toolkit Workshop
 
 
-`OpenSCAP Workshop` is a ansible playbook to provision servers in AWS. This playbook uses Ansible to wrap Terraform, for provisioning AWS infrastructure and nodes. To find more info about Terraform [check here](https://www.terraform.io/docs/providers/aws/index.html)
+`JBoss Migration Toolkit Workshop` is a ansible playbook to provision servers in AWS. This playbook uses Ansible to wrap Terraform, for provisioning AWS infrastructure and nodes. To find more info about Terraform [check here](https://www.terraform.io/docs/providers/aws/index.html)
 
 These modules all require that you have AWS API keys available to use to provision AWS resources. You also need to have IAM permissions set to allow you to create resources within AWS. There are several methods for setting up your AWS environment on you local machine. 
 
@@ -38,7 +38,7 @@ pool_id: ""
 
 # If you plan on protecting your web server with 
 # a password, set it here:
-workshop_password: "openscap!@#" 
+workshop_password: "r3dh4t1! 
 
 #####################################################
 # aws.infra.terraform |  Domain Name you own
@@ -46,11 +46,11 @@ workshop_password: "openscap!@#"
 # NOTE: some commonly used domains/zone combos:
 #
 # For openscap.io:
-#domain_name: "openscap.io"
+#domain_name: "demo-test-dlt.com"
 #zone_id: "ZH2VK6MJFH9R4"
 #
 # For redhatgov.io (https://redhatgov.signin.aws.amazon.com/console)
-#domain_name: "redhatgov.io"
+#domain_name: "demo-test-dlt.com"
 #zone_id: "Z24HHVIM122OC"
 
 domain_name: ""
