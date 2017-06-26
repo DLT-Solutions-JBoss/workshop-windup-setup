@@ -1,7 +1,7 @@
 # file: group_vars/all
 
 #####################################################
-# container.workshop  |  RHEL Subscription Info
+# jmt.workshop  |  RHEL Subscription Info
 #####################################################
 username: ""
 password: ""
@@ -10,7 +10,7 @@ pool_id: ""
 
 # If you plan on protecting your web server with 
 # a password, set it here:
-workshop_password: "openscap!@#" 
+workshop_password: "r3dh4t1!" 
 
 #####################################################
 # aws.infra.terraform |  Domain Name you own
@@ -25,7 +25,7 @@ workshop_password: "openscap!@#"
 #domain_name: "redhatgov.io"
 #zone_id: "Z24HHVIM122OC"
 
-domain_name: ""
+domain_name: "demo-test-dlt.com"
 zone_id: ""
 
 #####################################################

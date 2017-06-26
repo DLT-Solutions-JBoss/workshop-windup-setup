@@ -29,7 +29,7 @@ Configure the workshop with your [api keys](https://aws.amazon.com/developers/ac
 # file: group_vars/all
 
 #####################################################
-# container.workshop  |  RHEL Subscription Info
+# jmt.workshop  |  RHEL Subscription Info
 #####################################################
 username: ""
 password: ""
@@ -100,9 +100,9 @@ terraform destroy
 
 ## Configure Container Workshop
 
-### role/container.workshop
+### role/jmt.workshop
 
-To target the newly created EC2 instance use the `inventory` folder. The [ec2.py](http://docs.ansible.com/ansible/intro_dynamic_inventory.html) is a dynamic script that queries Amazon for your instances. The `container.workshop` role sets up the student environment.
+To target the newly created EC2 instance use the `inventory` folder. The [ec2.py](http://docs.ansible.com/ansible/intro_dynamic_inventory.html) is a dynamic script that queries Amazon for your instances. The `jmt.workshop` role sets up the student environment.
 
 ### Use `aws tags` to query AWS for your instance by AWS Tags
 
@@ -125,4 +125,4 @@ student#.labs.openscap.io
 
 ## Changing the student webpage
 
-If you'd like to change the student webpage, e.g. add more tabs, edit `roles/container.workshop/files/web_content/index.html`
+If you'd like to change the student webpage, e.g. add more tabs, edit `roles/jmt.workshop/files/web_content/index.html`

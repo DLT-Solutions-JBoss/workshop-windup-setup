@@ -1,0 +1,77 @@
+---
+#---------------------------------------------------
+#  Docker
+#---------------------------------------------------
+- name: Install Docker
+  become: yes
+  yum: name=docker state=present
+  tags:
+    - rhel
+
+- name: Install Atomic
+  become: yes
+  yum: name=atomic state=present
+  tags:
+    - rhel
+
+- name: Enable insecure registry
+  become: yes
+  lineinfile: dest=/etc/sysconfig/docker state=present line='OPTIONS=--insecure-registry 172.30.0.0/16' regexp="^#?OPTIONS" 
+  tags:
+    - rhel
+
+- name: Start docker
+  become: yes
+  service: name=docker state=started enabled=yes
+  tags:
+    - rhel
+
+- name: Pull RHEL7.0 container
+  become: yes
+  command: docker pull rhel7.0
+  tags:
+    - rhel
+
+- name: Pull RHEL7.1 container
+  become: yes
+  command: docker pull rhel7.1
+  tags:
+    - rhel
+
+- name: Pull RHEL7.2 container
+  become: yes
+  command: docker pull rhel7.2
+  tags:
+    - rhel
+
+- name: Pull RHEL7.3 container
+  become: yes
+  command: docker pull rhel7.3
+  tags:
+    - rhel
+
+- name: Pull RHEL7 latest container
+  become: yes
+  command: docker pull rhel7
+  tags:
+    - rhel
+
+- name: Create report directory
+  file: path=/var/www/html/scans/ state=directory owner=ec2-user group=ec2-user mode=0775
+
+- name: Generate sample OVAL scan of RHEL 7.0 container
+  become: yes
+  command: oscap-docker image-cve bc668af2b27f --results /var/www/html/scans/setup-rhel7.0-vulns.xml --report /var/www/html/scans/setup-rhel7.0-vulns.html
+  tags:
+    - rhel
+
+- name: Generate sample compliance scan of RHEL 7.0 container against DoD STIG
+  become: yes
+  command: oscap-docker container rhel7.0 oval eval --results /var/www/html/scans/setup-rhel7.0-stig.xml --report /var/www/html/scans/setup-rhel7.0-stig.html /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml 
+
+- name: Generate sample compliance report of host
+  become: yes
+  command: oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_stig-rhel7-server-upstream --results /var/www/html/scans/setup-host-stig.xml --report /var/www/html/scans/setup-host-stig.html /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+  ignore_errors: yes
+
+

@@ -1,0 +1,3 @@
+# file: roles/jmt.workshop/vars/main.yml
+---
+# Everything here should be from group_vars/all
